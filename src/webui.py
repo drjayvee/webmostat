@@ -8,7 +8,7 @@ urls = (
 	'/(|temperature|schedule)', 'ShowPage'
 )
 
-render = web.template.render('templates/', base='base', globals={'script': None})
+render = web.template.render('templates/', base='base')
 
 class ShowPage:
 	def GET(self, page):
