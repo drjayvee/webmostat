@@ -21,7 +21,11 @@ YUI.add('webmostat', function(Y) {
 			this[initFuncName]();
 		},
 		
-		_initControl: function () {},
+		_initControl: function () {
+			var liveButton = new Y.ToggleButton({srcNode: '#live'} ).render(),
+				bathButton = new Y.ToggleButton({srcNode: '#bath'} ).render();
+			
+		},
 		
 		_initTemperature: function () {},
 		
