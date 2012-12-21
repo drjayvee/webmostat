@@ -1,22 +1,28 @@
 #!/usr/bin/python -tt
 
 import web
+import os
 import json
 
 urls = (
-	'/', 'index',
-	'/about', 'about'
+	'/', 'Control',
+	'/?temp', 'Temp',
+	'/?schedule', 'Schedule'
 )
 
 render = web.template.render('templates/')
 
-class index:
+class Control:
 	def GET(self):
-		return 'GET query parameters:' + json.dumps(web.input(), indent=4)
+		return render.main('thermostat controls ', '/', 'Control')
 
-class about:
+class Temp:
 	def GET(self):
-		return render.about()
+		return render.main('current temperature', 'temp', 'Temps')
+
+class Schedule:
+	def GET(self):
+		return render.main(render.schedule(), 'schedule', 'Schedule')
 
 if __name__ == "__main__":
 	app = web.application(urls, globals())
