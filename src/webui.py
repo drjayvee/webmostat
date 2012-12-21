@@ -5,24 +5,14 @@ import os
 import json
 
 urls = (
-	'/', 'Control',
-	'/temperature', 'Temperature',
-	'/schedule', 'Schedule'
+	'/(|temperature|schedule)', 'ShowPage'
 )
 
 render = web.template.render('templates/', base='base', globals={'script': None})
 
-class Control:
-	def GET(self):
-		return render.control()
-
-class Temperature:
-	def GET(self):
-		return render.temperature()
-
-class Schedule:
-	def GET(self):
-		return render.schedule()
+class ShowPage:
+	def GET(self, page):
+		return getattr(render, page or 'control')()
 
 if __name__ == "__main__":
 	app = web.application(urls, globals())
