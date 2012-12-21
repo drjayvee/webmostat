@@ -1,4 +1,4 @@
-﻿$def with (content)
+$def with (content)
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,15 +8,15 @@
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 
-<body>
+<body class="yui3-skin-sam">
 
 <header>
 <h1>Jayz Webmostat</h1>
 <nav>
   <ul>
-    <li$:(' class="active"' if content.active == 'control' else '')><a href="/">Control</a></li>
-    <li$:(' class="active"' if content.active == 'temperature' else '')><a href="temperature">Temperature</a></li>
-    <li$:(' class="active"' if content.active == 'schedule' else '')><a href="schedule">Schedule</a></li>
+    <li$:(' class="active"' if content.page == 'control' else '')><a href="/">Control</a></li>
+    <li$:(' class="active"' if content.page == 'temperature' else '')><a href="temperature">Temperature</a></li>
+    <li$:(' class="active"' if content.page == 'schedule' else '')><a href="schedule">Schedule</a></li>
   </ul>
 </nav>
 </header>
@@ -28,10 +28,14 @@ $if content.title:
 </div>
 
 <script src="http://yui.yahooapis.com/3.8.0/build/yui/yui-min.js"></script>
-$if content.script:
-	<script>
-	$:content.script
-	</script>
+<script src="/static/webmostat.js"></script>
+<script>
+YUI().use('webmostat', function(Y) {
+	new Y.Webmostat({
+		page: '$content.page'
+	}).run();
+});
+</script>
 
 </body>
 </html>
