@@ -6,23 +6,23 @@ import json
 
 urls = (
 	'/', 'Control',
-	'/?temp', 'Temp',
-	'/?schedule', 'Schedule'
+	'/temperature', 'Temperature',
+	'/schedule', 'Schedule'
 )
 
-render = web.template.render('templates/')
+render = web.template.render('templates/', base='base', globals={'script': None})
 
 class Control:
 	def GET(self):
-		return render.main('thermostat controls ', '/', 'Control')
+		return render.control()
 
-class Temp:
+class Temperature:
 	def GET(self):
-		return render.main('current temperature', 'temp', 'Temps')
+		return render.temperature()
 
 class Schedule:
 	def GET(self):
-		return render.main(render.schedule(), 'schedule', 'Schedule')
+		return render.schedule()
 
 if __name__ == "__main__":
 	app = web.application(urls, globals())
