@@ -1,4 +1,4 @@
-import datetime
+import datetime, time
 import sqlite3
 
 class Logger:
@@ -17,7 +17,8 @@ class Logger:
 class PrintLogger(Logger):
 	logFormat = "@ {ts}: {type}: {value}"
 
-	def logEvent(self, timeStamp, type, value):
+	def logEvent(self, type, value, timeStamp=None):
+		timeStamp = timeStamp or int(time.time())
 		print PrintLogger.logFormat.format(
 			ts=PrintLogger.__convertTS(timeStamp), type=type, value=value
 		)
@@ -44,7 +45,8 @@ class DBLogger(Logger):
 	def __del__(self):
 		self.con.close()
 
-	def logEvent(self, timeStamp, type, value):
+	def logEvent(self, type, value, timeStamp=None):
+		timeStamp = timeStamp or int(time.time())
 		self.con.execute(
 			"INSERT INTO event_log VALUES (?, ?, ?)",
 			(timeStamp, type, value)
