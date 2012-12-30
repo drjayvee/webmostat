@@ -22,6 +22,7 @@ class ShowPage:
     def GET(self, page):
         return getattr(render, page or 'control')()
 
+
 class Ajax:
     def POST(self, operation):
         params = webapi.input()
@@ -39,12 +40,9 @@ class Ajax:
 
     #TODO: move this to Thermostat class in parent package
     def setThermostat(self, pin, active):
-        command = 'sudo /usr/bin/gpiocli.py {pin} {setting} -v -q'.format(
-            pin=pin, setting='HIGH' if active else 'LOW'
-        )
         try:
-            subprocess.check_call([command], shell=True)
-        except subprocess.CalledProcessError:
+            thermostat.setThermostat(pin, active)
+        except thermostat.ThermostatException:
             raise webapi.InternalError()
 
 if __name__ == "__main__":
