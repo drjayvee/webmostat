@@ -1,15 +1,22 @@
-#!/usr/bin/python -tt
-
 from web import application, webapi, template
 import json
 import subprocess
+
+# to import thermostat, we have to add parent path, because this module is run as __main__
+if __name__ == "__main__":
+    import os, sys
+    sys.path.append(os.path.abspath('..'))
+import thermostat
 
 urls = (
     '/(|temperature|schedule)', 'ShowPage',
     '/ajax/(\w+)', 'Ajax'
 )
 
-render = template.render('templates/', base='base')
+render = template.render(
+    'templates/', base='base',
+    globals={'thermostats': thermostat.config['thermostats']}
+)
 
 class ShowPage:
     def GET(self, page):

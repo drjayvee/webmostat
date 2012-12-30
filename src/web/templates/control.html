@@ -2,9 +2,6 @@ $var title: Control
 $var page: control
 <p>Let's turn up teh heat!</p>
 
-<div></div>
-<h2>Living room</h2>
-<button data-pin="13" class="yui3-button">Enable</button>
-
-<h2>Bathroom</h2>
-<button data-pin="15" class="yui3-button">Enable</button>
+$for thermostat in thermostats:
+    <h2>$thermostat[1]</h2>
+    <button data-pin="$thermostat[0]" class="yui3-button">Enable</button>
