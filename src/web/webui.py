@@ -1,11 +1,12 @@
 #!/usr/bin/python -tt
 
 from web import application, webapi, template
+import json
 import subprocess
 
 urls = (
     '/(|temperature|schedule)', 'ShowPage',
-    '/ajax', 'Ajax'
+    '/ajax/(\w+)', 'Ajax'
 )
 
 render = template.render('templates/', base='base')
@@ -15,16 +16,16 @@ class ShowPage:
         return getattr(render, page or 'control')()
 
 class Ajax:
-    def POST(self):
+    def POST(self, operation):
         params = webapi.input()
 
         try:
-            operation = params.operation
-            if operation == 'setThermostat':
-                self.setThermostat(
-                    13 if params.room == 'living' else 15,
-                    True if params.setting == 'on' else False
-                )
+            if hasattr(self, operation) and callable(getattr(self, operation)):     # there is a function for operation
+                args = {}
+                for k, v in params.iteritems():                                     # json-decode parameters, and
+                    args[k] = json.loads(v)
+
+                getattr(self, operation)( **args )                                  # call it with unpacked params
             else:
                 raise webapi.BadRequest()
         except AttributeError:
@@ -33,9 +34,10 @@ class Ajax:
         return 'ok'
 
     #TODO: move this to Thermostat class in parent package
-    def setThermostat(self, pinId, active):
-        command = 'sudo /usr/bin/gpiocli.py {pinId} {setting} -q'.format(
-            pinId=pinId, setting='HIGH' if active else 'LOW'
+    def setThermostat(self, pin, active):
+        print 'setThermostat:', pin, active
+        command = 'sudo /usr/bin/gpiocli.py {pin} {setting} -v -q'.format(
+            pin=pin, setting='HIGH' if active else 'LOW'
         )
         try:
             subprocess.check_call([command], shell=True)

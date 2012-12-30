@@ -23,17 +23,16 @@ YUI.add('webmostat', function(Y) {
 
         _initControl: function () {
             Y.all('.yui3-button').each(function (input) {
-                var room = input.getAttribute('data-room');
+                var pin = input.getAttribute('data-pin');
 
                 new Y.ToggleButton({srcNode: input})
                     .render()
                     .after('pressedChange', function toggleRoom () {
-                        Y.io( '/ajax', {
+                        Y.io( '/ajax/setThermostat', {
                             method: 'POST',
                             data: {
-                                operation:  'setThermostat',
-                                room:       room,
-                                setting:    this.get('pressed') ? 'on' : 'off'
+                                pin:        pin,
+                                active:     Y.JSON.stringify(this.get('pressed'))
                             }
                         } );
                     });
