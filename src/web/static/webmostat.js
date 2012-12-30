@@ -31,6 +31,7 @@ YUI.add('webmostat', function(Y) {
                         Y.io( '/ajax', {
                             method: 'POST',
                             data: {
+                                operation:  'setThermostat',
                                 room:       room,
                                 setting:    this.get('pressed') ? 'on' : 'off'
                             }

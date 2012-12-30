@@ -17,16 +17,30 @@ class ShowPage:
 class Ajax:
 	def POST(self):
 		params = webapi.input()
-		pinId = 13 if params.get('room') == 'living' else 15
-		setting = 'HIGH' if params.get('setting') == 'on' else 'LOW'
 
-		command = 'sudo /usr/bin/gpiocli.py {pinId} {setting} -v'.format(pinId=pinId, setting=setting)
-		subprocess.check_call(
-			[command], shell=True
+		try:
+			operation = params.operation
+			if operation == 'setThermostat':
+				self.setThermostat(
+					13 if params.room == 'living' else 15,
+					True if params.setting == 'on' else False
+				)
+			else:
+				raise webapi.BadRequest()
+		except AttributeError:
+			raise webapi.BadRequest()
+
+		return 'ok'
+
+	#TODO: move this to Thermostat class in parent package
+	def setThermostat(self, pinId, active):
+		command = 'sudo /usr/bin/gpiocli.py {pinId} {setting} -q'.format(
+			pinId=pinId, setting='HIGH' if active else 'LOW'
 		)
-
-		return command
-#		return 'ok'
+		try:
+			subprocess.check_call([command], shell=True)
+		except subprocess.CalledProcessError:
+			raise webapi.InternalError()
 
 if __name__ == "__main__":
 	app = application(urls, globals())
