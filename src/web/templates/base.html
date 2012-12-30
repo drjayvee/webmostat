@@ -23,17 +23,17 @@ $def with (content)
 
 <div id="main">
 $if content.title:
-	<h2>$:content.title</h2>
-	$:content
+    <h2>$:content.title</h2>
+    $:content
 </div>
 
 <script src="http://yui.yahooapis.com/3.8.0/build/yui/yui-min.js"></script>
 <script src="/static/webmostat.js"></script>
 <script>
 YUI().use('webmostat', function(Y) {
-	new Y.Webmostat({
-		page: '$content.page'
-	}).run();
+    new Y.Webmostat({
+        page: '$content.page'
+    }).run();
 });
 </script>
 
