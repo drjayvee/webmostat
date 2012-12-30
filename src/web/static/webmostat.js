@@ -13,7 +13,7 @@ YUI.add('webmostat', function(Y) {
 	Y.Webmostat = Y.extend(Webmostat, Y.Base, {
 		run: function () {
 			var page = this.get('page' ),
-				initFuncName = '_init' + page.charAt(0 ).toUpperCase() + page.slice(1);
+				initFuncName = '_init' + page.charAt(0).toUpperCase() + page.slice(1);
 			
 			if ( !Y.Lang.isFunction(this[initFuncName]) ) {
 				alert( 'Cannot init page' );
@@ -22,9 +22,21 @@ YUI.add('webmostat', function(Y) {
 		},
 		
 		_initControl: function () {
-			var liveButton = new Y.ToggleButton({srcNode: '#live'} ).render(),
-				bathButton = new Y.ToggleButton({srcNode: '#bath'} ).render();
-			
+            Y.all('.yui3-button').each(function (input) {
+                var room = input.getAttribute('data-room');
+
+                new Y.ToggleButton({srcNode: input})
+                    .render()
+                    .after('pressedChange', function toggleRoom () {
+                        Y.io( '/ajax', {
+                            method: 'POST',
+                            data: {
+                                room:       room,
+                                setting:    this.get('pressed') ? 'on' : 'off'
+                            }
+                        } );
+                    });
+            } );
 		},
 		
 		_initTemperature: function () {},
