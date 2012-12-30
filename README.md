@@ -16,3 +16,4 @@ Setup
 -----
 * [Raspberry Pi](http://www.raspberrypi.org/) (with WiFi) to control some electronics using GPIO
 * [Web.py](http://webpy.org/) for the web interface
+* [gpio-cli](https://github.com/drjayvee/gpio-cli) to control GPIO from web.py
