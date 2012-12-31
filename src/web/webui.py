@@ -5,7 +5,7 @@ import subprocess
 # to import thermostat, we have to add parent path, because this module is run as __main__
 if __name__ == "__main__":
     import os, sys
-    sys.path.append(os.path.abspath('..'))
+    sys.path.append(os.path.abspath(os.path.dirname(__file__) + '../'))
 import thermostat
 
 urls = (
@@ -38,7 +38,6 @@ class Ajax:
 
         return 'ok'
 
-    #TODO: move this to Thermostat class in parent package
     def setThermostat(self, pin, active):
         try:
             thermostat.setThermostat(pin, active)
