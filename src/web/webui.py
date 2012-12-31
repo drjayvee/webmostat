@@ -1,9 +1,8 @@
-from web import application, webapi, template
+from web import application, template, webapi
 import json
-import subprocess
 
 # to import thermostat, we have to add parent path, because this module is run as __main__
-if __name__ == "__main__":
+if __name__ == '__main__':
     import os, sys
     sys.path.append(os.path.abspath(os.path.dirname(__file__) + '../'))
 import thermostat
@@ -44,6 +43,6 @@ class Ajax:
         except thermostat.ThermostatException as ex:
             raise webapi.InternalError(ex)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app = application(urls, globals())
     app.run()
