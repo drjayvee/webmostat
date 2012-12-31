@@ -35,6 +35,9 @@ YUI.add('webmostat', function(Y) {
                                 active:     Y.JSON.stringify(this.get('pressed'))
                             },
                             on: {
+                                success: function () {
+                                  this.set('label', 'Disable');
+                                },
                                 failure: function (ioId, res) {
                                     alert('Could not toggle thermostat: ' + res.responseText);
                                     this.set('disabled', true)

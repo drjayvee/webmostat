@@ -12,9 +12,14 @@ urls = (
     '/ajax/(\w+)', 'Ajax'
 )
 
+thermostats = {}
+for thm in thermostat.config['thermostats']:
+    pin = thm[0]
+    thermostats[pin] = {'name': thm[1], 'active': thermostat.getThermostat(pin)}
+
 render = template.render(
     'templates/', base='base',
-    globals={'thermostats': thermostat.config['thermostats']}
+    globals={'thermostats': thermostats}
 )
 
 class ShowPage:

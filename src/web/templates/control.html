@@ -2,6 +2,8 @@ $var title: Control
 $var page: control
 <p>Let's turn up teh heat!</p>
 
-$for thermostat in thermostats:
-    <h2>$thermostat[1]</h2>
-    <button data-pin="$thermostat[0]" class="yui3-button">Enable</button>
+$for pin, details in thermostats.iteritems():
+    $ selected = ' yui3-button-selected' if details['active'] else ''
+    $ label = 'Disable' if details['active'] else 'Enable'
+    <h2>$details['name']</h2>
+    <button data-pin="$pin" class="yui3-button$:selected">$label</button>
