@@ -18,4 +18,4 @@ def setThermostat(pin, active):
     try:
         subprocess.check_call([command], shell=True)
     except subprocess.CalledProcessError:
-        raise ThermostatException()
+        raise ThermostatException('Call to gpiocli failed')

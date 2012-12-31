@@ -27,13 +27,21 @@ YUI.add('webmostat', function(Y) {
 
                 new Y.ToggleButton({srcNode: input})
                     .render()
-                    .after('pressedChange', function toggleRoom () {
+                    .after('pressedChange', function () {
                         Y.io( '/ajax/setThermostat', {
                             method: 'POST',
                             data: {
                                 pin:        pin,
                                 active:     Y.JSON.stringify(this.get('pressed'))
-                            }
+                            },
+                            on: {
+                                failure: function (ioId, res) {
+                                    alert('Could not toggle thermostat: ' + res.responseText);
+                                    this.set('disabled', true)
+                                        .set('label', 'Broken!');
+                                }
+                            },
+                            context: this
                         } );
                     });
             } );

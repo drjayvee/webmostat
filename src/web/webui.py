@@ -34,15 +34,15 @@ class Ajax:
 
             getattr(self, operation)(**args)                                    # call it with unpacked params
         else:
-            raise webapi.BadRequest()
+            raise webapi.BadRequest('Invalid method')
 
         return 'ok'
 
     def setThermostat(self, pin, active):
         try:
             thermostat.setThermostat(pin, active)
-        except thermostat.ThermostatException:
-            raise webapi.InternalError()
+        except thermostat.ThermostatException as ex:
+            raise webapi.InternalError(ex)
 
 if __name__ == "__main__":
     app = application(urls, globals())
