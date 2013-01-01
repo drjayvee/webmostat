@@ -12,16 +12,19 @@ urls = (
     '/ajax/(\w+)', 'Ajax'
 )
 
-thermostats = {}
-for thm in thermostat.config['thermostats']:
-    pin = thm[0]
-    thermostats[pin] = {'name': thm[1], 'active': thermostat.getPin(pin)}
+def getThermostats():
+    thermostats = {}
+    for thm in thermostat.config['thermostats']:
+        pin = thm[0]
+        thermostats[pin] = {'name': thm[1], 'active': thermostat.getPin(pin)}
+    return thermostats
 
 render = template.render('templates/')
 
 class ShowPage:
     def GET(self):
-        control = render.control(thermostats)
+
+        control = render.control(getThermostats())
         temperature = render.temperature(thermostat.getCurrentTemp())
         schedule = render.schedule()
 
