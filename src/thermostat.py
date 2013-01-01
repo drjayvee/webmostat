@@ -1,4 +1,5 @@
 import subprocess
+import logger.logger as logger
 
 config = {
     'thermostats': (
@@ -7,7 +8,8 @@ config = {
     ),
     'gpioCommand': 'sudo gpiocli.py {action} {pin} {setting} -v -q',
     'tempCommand': 'cat /sys/bus/w1/devices/28-0000042c0c6f/w1_slave |tail -1 |grep -Eo "[0-9]{4}"',
-    'thermSensorOffset': 4
+    'thermSensorOffset': 4,
+    'logFile': 'log.sqlite3'
 }
 
 class ThermostatException(Exception):
@@ -35,7 +37,11 @@ def setPin(pin, active):
 def getCurrentTemp():
     try:
         reading = subprocess.check_output(config['tempCommand'], shell=True)[:-1]
-        print reading, ', corrected: ', int(reading) - config['thermSensorOffset']
         return (int(reading) / 100.0) - config['thermSensorOffset']
     except subprocess.CalledProcessError:
         raise ThermostatException('Could not read temperature')
+
+def logCurrentTemp():
+    temp = getCurrentTemp()
+    dbl = logger.DBLogger(config['logFile'])
+    dbl.logEvent('temp', temp)

@@ -43,6 +43,7 @@ class DBLogger(Logger):
             DBLogger.__initializeDB(self.con)
 
     def __del__(self):
+        self.con.commit()
         self.con.close()
 
     def logEvent(self, type, value, timeStamp=None):
@@ -54,8 +55,8 @@ class DBLogger(Logger):
 
     def getEvents(self, type, fromTimeStamp=0, toTimeStamp=None):
         return self.con.execute(
-            "SELECT * FROM event_log WHERE type = ?",
-            type
+            "SELECT * FROM event_log WHERE type = ? AND timestamp >= ?",
+            (type, fromTimeStamp)
         ).fetchall()
 
     def countEvents(self, type, fromTimeStamp=0, toTimeStamp=None):
