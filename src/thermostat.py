@@ -5,13 +5,15 @@ config = {
         (13, 'Living room'),
         (15, 'Bathroom')
     ),
-    'gpioCommand': 'sudo gpiocli.py {action} {pin} {setting} -v -q'
+    'gpioCommand': 'sudo gpiocli.py {action} {pin} {setting} -v -q',
+    'tempCommand': 'cat /sys/bus/w1/devices/28-0000042c0c6f/w1_slave |tail -1 |grep -Eo "[0-9]{4}"',
+    'thermSensorOffset': 4
 }
 
 class ThermostatException(Exception):
     pass
 
-def getThermostat(pin):
+def getPin(pin):
     command = config['gpioCommand'].format(
         action='get', pin=pin, setting=''
     )
@@ -21,7 +23,7 @@ def getThermostat(pin):
     except subprocess.CalledProcessError:
         raise ThermostatException('Call to gpiocli failed')
 
-def setThermostat(pin, active):
+def setPin(pin, active):
     command = config['gpioCommand'].format(
         action='set', pin=pin, setting='HIGH' if active else 'LOW'
     )
@@ -29,3 +31,11 @@ def setThermostat(pin, active):
         subprocess.check_call([command], shell=True)
     except subprocess.CalledProcessError:
         raise ThermostatException('Call to gpiocli failed')
+
+def getCurrentTemp():
+    try:
+        reading = subprocess.check_output(config['tempCommand'], shell=True)[:-1]
+        print reading, ', corrected: ', int(reading) - config['thermSensorOffset']
+        return (int(reading) / 100.0) - config['thermSensorOffset']
+    except subprocess.CalledProcessError:
+        raise ThermostatException('Could not read temperature')

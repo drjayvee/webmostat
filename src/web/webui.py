@@ -15,7 +15,7 @@ urls = (
 thermostats = {}
 for thm in thermostat.config['thermostats']:
     pin = thm[0]
-    thermostats[pin] = {'name': thm[1], 'active': thermostat.getThermostat(pin)}
+    thermostats[pin] = {'name': thm[1], 'active': thermostat.getPin(pin)}
 
 render = template.render(
     'templates/', base='base',
@@ -44,7 +44,7 @@ class Ajax:
 
     def setThermostat(self, pin, active):
         try:
-            thermostat.setThermostat(pin, active)
+            thermostat.setPin(pin, active)
         except thermostat.ThermostatException as ex:
             raise webapi.InternalError(ex)
 
