@@ -1,39 +1,43 @@
-$def with (content)
+$def with (control, temperature, schedule)
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Webmostat$(' - ' + content.title if content.title else '')</title>
+  <title>Jay's Webmostat</title>
   <link rel="stylesheet" href="http://yui.yahooapis.com/combo?3.8.0/build/cssreset/cssreset-min.css&3.8.0/build/cssfonts/cssfonts-min.css&3.8.0/build/cssgrids/cssgrids-min.css">
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 
 <body class="yui3-skin-sam">
 
-<header>
-<h1>Jayz Webmostat</h1>
-<nav>
-  <ul>
-    <li$:(' class="active"' if content.page == 'control' else '')><a href="/">Control</a></li>
-    <li$:(' class="active"' if content.page == 'temperature' else '')><a href="temperature">Temperature</a></li>
-    <li$:(' class="active"' if content.page == 'schedule' else '')><a href="schedule">Schedule</a></li>
-  </ul>
-</nav>
-</header>
+<header><h1>Jay's Webmostat</h1></header>
 
 <div id="main">
-$if content.title:
-    <h2>$:content.title</h2>
-    $:content
+  <div id="tabs">
+      <ul>
+        <li><a href="#control">Control</a></li>
+        <li><a href="#temperature">Temperature</a></li>
+        <li><a href="#schedule">Schedule</a></li>
+      </ul>
+      <div>
+        <div id="control">
+            $:control
+        </div>
+        <div id="temperature">
+            $:temperature
+        </div>
+        <div id="schedule">
+            $:schedule
+        </div>
+      </div>
+  </div>
 </div>
 
 <script src="http://yui.yahooapis.com/3.8.0/build/yui/yui-min.js"></script>
 <script src="/static/webmostat.js"></script>
 <script>
 YUI().use('webmostat', function(Y) {
-    new Y.Webmostat({
-        page: '$content.page'
-    }).run();
+    new Y.Webmostat().run();
 });
 </script>
 

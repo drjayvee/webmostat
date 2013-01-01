@@ -1,5 +1,4 @@
 body {
-    margin: 0 auto;
     padding: 1em 0;
 
     background-color: #F0F0F0;
@@ -7,50 +6,24 @@ body {
     font-family: 'Trebuchet MS', Trebuchet, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-header, div#main {
+header, #main {
     text-align: center;
 }
-
-/* Navigation */
-header nav ul {
-    display: inline-block;
-    list-style: none;
-
-    background: black;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-}
-
-header nav li {
-    margin: 0;
-    padding: 0.2em 0.5em;
-
-    display: inline-block;
-
-    text-align: center;
-}
-header nav li.active {
-    background-color: gray;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-}
-
-header nav a {
-    color: #F0F0F0;
-    font-size: 1.5em;
-    font-weight: bold;
-    text-decoration: none;
-}
-header nav li.active a {
-    color: orange;
-}
-
-/* main content */
-div#main {
+#main {
     margin-top: 2em;
 }
+
+#tabs {
+    margin: 0 auto;
+    max-width: 400px;
+}
+.yui3-skin-sam #main .yui3-tab-label {
+    font-size: 1.2em;
+}
+.yui3-tab-panel {
+    padding: 1em;
+}
+
 
 h1, h2 {
     text-shadow: 3px 3px 5px #333;
@@ -58,7 +31,7 @@ h1, h2 {
 h1 {
     margin-bottom: 0.25em;
 
-    color:  blue;
+    color: #2647A0;
     font-size: 2em;
 }
 h2 {

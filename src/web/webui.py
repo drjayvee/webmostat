@@ -8,7 +8,7 @@ if __name__ == '__main__':
 import thermostat
 
 urls = (
-    '/(|temperature|schedule)', 'ShowPage',
+    '/', 'ShowPage',
     '/ajax/(\w+)', 'Ajax'
 )
 
@@ -17,14 +17,19 @@ for thm in thermostat.config['thermostats']:
     pin = thm[0]
     thermostats[pin] = {'name': thm[1], 'active': thermostat.getPin(pin)}
 
-render = template.render(
-    'templates/', base='base',
-    globals={'thermostats': thermostats}
-)
+render = template.render('templates/')
 
 class ShowPage:
-    def GET(self, page):
-        return getattr(render, page or 'control')()
+    def GET(self):
+        control = render.control(thermostats)
+        temperature = render.temperature(thermostat.getCurrentTemp())
+        schedule = render.schedule()
+
+        return render.base(
+            unicode(control),
+            unicode(temperature),
+            unicode(schedule)
+        )
 
 
 class Ajax:

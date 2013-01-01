@@ -3,26 +3,18 @@ YUI.add('webmostat', function(Y) {
         Webmostat.superclass.constructor.apply(this, arguments);
     }
     Webmostat.NAME = 'webmostat';
-    Webmostat.ATTRS = {
-        page: {
-            value: 'none beeatch',
-            writeOnce: 'initOnly'
-        }
-    };
 
     Y.Webmostat = Y.extend(Webmostat, Y.Base, {
         run: function () {
-            var page = this.get('page' ),
-                initFuncName = '_init' + page.charAt(0).toUpperCase() + page.slice(1);
+            new Y.TabView({srcNode: '#tabs'}).render();
 
-            if ( !Y.Lang.isFunction(this[initFuncName]) ) {
-                alert( 'Cannot init page' );
-            }
-            this[initFuncName]();
+            this._initControl();
+            this._initTemperature();
+            this._initSchedule();
         },
 
         _initControl: function () {
-            Y.all('.yui3-button').each(function (input) {
+            Y.all('#control .yui3-button').each(function (input) {
                 var pin = input.getAttribute('data-pin');
 
                 new Y.ToggleButton({srcNode: input})
@@ -47,11 +39,11 @@ YUI.add('webmostat', function(Y) {
                             context: this
                         } );
                     });
-            } );
+            });
         },
 
         _initTemperature: function () {},
 
         _initSchedule: function () {}
     });
-}, '0.1337', {requires: ['base', 'button', 'io', 'json-stringify']} );
+}, '0.1337', {requires: ['base', 'button', 'io', 'json-stringify', 'tabview']} );
