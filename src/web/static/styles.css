@@ -1,12 +1,11 @@
 body {
     padding: 1em 0;
 
-    background-color: #F0F0F0;
-
+    background: #A8A9AB url(/static/monkey.jpg) no-repeat left top;
     font-family: 'Trebuchet MS', Trebuchet, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-header, #main {
+header, #main, footer {
     text-align: center;
 }
 #main {
@@ -26,16 +25,22 @@ header, #main {
 
 
 h1, h2 {
-    text-shadow: 3px 3px 5px #333;
+    text-shadow: 3px 3px 5px #A8A9AB;
 }
 h1 {
     margin-bottom: 0.25em;
 
-    color: #2647A0;
-    font-size: 2em;
+    color: #FDA13C;
+    font-size: 2.5em;
 }
 h2 {
     margin-bottom: 0.15em;
 
     font-size: 1.5em;
+}
+
+footer {
+    margin-top: 1em;
+    font-size: 0.75em;
+    color: white;
 }
