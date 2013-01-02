@@ -11,6 +11,7 @@ I have a Raspberry Pi hooked up to my heating system, which I want to control vi
 The idea is to enable me to switch off the heater in case I forgot, or to start heating
 remotely so my living room is cozy when I get home.
 
+![screenshot](https://github.com/drjayvee/webmostat/blob/master/doc/Screenshot.png)
 
 Setup
 -----
