@@ -62,7 +62,7 @@ class DBLogger(Logger):
 
         return self.con.execute(
             """
-            SELECT *
+            SELECT timestamp, data
             FROM event_log
             WHERE type = ? AND timestamp >= ?
             """ + toConstraint,
