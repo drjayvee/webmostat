@@ -1,4 +1,6 @@
+import os
 import subprocess
+import time
 import logger.logger as logger
 
 config = {
@@ -9,7 +11,7 @@ config = {
     'gpioCommand': 'sudo gpiocli.py {action} {pin} {setting} -v -q',
     'tempCommand': 'cat /sys/bus/w1/devices/28-0000042c0c6f/w1_slave |tail -1 |grep -Eo "[0-9]{4}"',
     'thermSensorOffset': 4,
-    'logFile': 'log.sqlite3'
+    'logFile': os.path.abspath(os.path.dirname(__file__) + '/..') + '/log.sqlite3'
 }
 
 class ThermostatException(Exception):
@@ -46,3 +48,8 @@ def logCurrentTemp():
     dbl = logger.DBLogger(config['logFile'])
     dbl.logEvent('temp', temp)
     return temp
+
+def getTempsForLastDay():
+    dbl = logger.DBLogger(config['logFile'])
+    ts = int(time.time()) - 24*60*60    # now - one day's seconds
+    dbl.getEvents('temp', ts)
