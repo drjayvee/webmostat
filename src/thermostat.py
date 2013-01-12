@@ -45,3 +45,4 @@ def logCurrentTemp():
     temp = getCurrentTemp()
     dbl = logger.DBLogger(config['logFile'])
     dbl.logEvent('temp', temp)
+    return temp
