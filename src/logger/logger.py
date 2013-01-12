@@ -54,31 +54,42 @@ class DBLogger(Logger):
         )
 
     def getEvents(self, type, fromTimeStamp=0, toTimeStamp=None):
-        return self.con.execute(
-            "SELECT * FROM event_log WHERE type = ? AND timestamp >= ?",
-            (type, fromTimeStamp)
-        ).fetchall()
-
-    def countEvents(self, type, fromTimeStamp=0, toTimeStamp=None):
-        timeConstraint = ""
-        binding = (type,)
-        if fromTimeStamp:
-            timeConstraint = "AND timestamp >= ?"
-            binding = (type, fromTimeStamp)
+        toConstraint = ""
+        binding = (type, fromTimeStamp)
+        if toTimeStamp:
+            toConstraint = "AND timestamp <= ?"
+            binding += (toTimeStamp,)
 
         return self.con.execute(
             """
-            SELECT COUNT(timestamp) as count
+            SELECT *
             FROM event_log
-            WHERE type = ?
-            """ + timeConstraint,
+            WHERE type = ? AND timestamp >= ?
+            """ + toConstraint,
             binding
-        ).fetchone()[0]
+        ).fetchall()
+
+    def countEvents(self, type, fromTimeStamp=0, toTimeStamp=None):
+        # Unfortunately, sqlite3 does not support cursor.rowcount
+        # http://docs.python.org/2/library/sqlite3.html#sqlite3.Cursor.rowcount
+        return len(
+            self.getEvents(type, fromTimeStamp, toTimeStamp )
+        )
 
     def purgeEvents(self, type, fromTimeStamp=0, toTimeStamp=None):
+        toConstraint = ""
+        binding = (type, fromTimeStamp)
+
+        if toTimeStamp:
+            toConstraint = "AND timestamp <= ?"
+            binding += (toTimeStamp,)
+
         self.con.execute(
-            "DELETE FROM event_log WHERE type = ? AND timestamp < ?",
-            (type, fromTimeStamp)
+            """
+            DELETE FROM event_log
+            WHERE type = ? AND timestamp >= ?
+            """ + toConstraint,
+            binding
         )
 
     @staticmethod
