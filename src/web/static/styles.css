@@ -2,6 +2,8 @@ body {
     padding: 1em 0;
 
     background: #A8A9AB url(/static/monkey.jpg) no-repeat left top;
+
+    font-size: 1em;
     font-family: 'Trebuchet MS', Trebuchet, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
@@ -17,11 +19,11 @@ header, #main, footer {
     margin: 0 auto;
     max-width: 400px;
 }
-.yui3-skin-sam #main .yui3-tab-label {
-    font-size: 1.2em;
-}
 .yui3-tab-panel {
     padding: 1em;
+}
+.yui3-tab-label {
+    font-size: 1.1em;
 }
 
 
@@ -35,9 +37,13 @@ h1 {
     font-size: 2.5em;
 }
 h2 {
-    margin-bottom: 0.15em;
+    margin: 0.5em 0 0.15em;
 
     font-size: 1.5em;
+}
+
+em {
+    font-weight: bold;
 }
 
 footer {
