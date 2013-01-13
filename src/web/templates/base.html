@@ -1,4 +1,4 @@
-$def with (control, temperature, schedule)
+$def with (control, temperature, schedule, jsConfig)
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,7 +40,9 @@ $def with (control, temperature, schedule)
 <script src="/static/webmostat.js"></script>
 <script>
 YUI().use('webmostat', function(Y) {
-    new Y.Webmostat().run();
+    new Y.Webmostat(
+        $:jsConfig
+    ).run();
 });
 </script>
 

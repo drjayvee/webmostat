@@ -23,7 +23,6 @@ render = template.render('templates/')
 
 class ShowPage:
     def GET(self):
-
         control = render.control(getThermostats())
         temperature = render.temperature(thermostat.getCurrentTemp())
         schedule = render.schedule()
@@ -31,7 +30,10 @@ class ShowPage:
         return render.base(
             unicode(control),
             unicode(temperature),
-            unicode(schedule)
+            unicode(schedule),
+            json.dumps({
+                'tempSeries': thermostat.getTempsForLastDay()
+            })
         )
 
 

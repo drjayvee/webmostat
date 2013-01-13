@@ -17,7 +17,7 @@ header, #main, footer {
 
 #tabs {
     margin: 0 auto;
-    max-width: 400px;
+    width: 500px;
 }
 .yui3-tab-panel {
     padding: 1em;
@@ -44,6 +44,11 @@ h2 {
 
 em {
     font-weight: bold;
+}
+
+#tempChart {
+    width: 90%;
+    height: 400px;
 }
 
 footer {
