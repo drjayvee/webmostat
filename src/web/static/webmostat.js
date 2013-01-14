@@ -55,21 +55,28 @@ YUI.add('webmostat', function(Y) {
                 temps = [];
 
             this.get('tempSeries').forEach(function (temp){
-                var time = new Date(temp[0] * 1000);
-
-                times.push(time.getHours() + ':' + time.getMinutes());
+                times.push(temp[0]);
                 temps.push(temp[1]);
             });
 
             chart = new Y.Chart({
                 dataProvider:   [times, temps],
-                type:           'spline'
+                type:           'spline',
+                categoryType:   'time'
             });
 
-            this.get('tabView').after('selectionChange', function (e) {
-                if (e.newVal.get('index') === 1) {    // temps tab selected
-                    chart.render( '#tempChart' );
-                }
+            chart.getAxisByKey('values')
+                .set('alwaysShowZero', false);
+
+            chart.getAxisByKey('category')
+                .set('labelFunction', function (ts){
+                    var d = new Date(ts * 1000);
+                    return d.getHours() + ':' + d.getMinutes();
+                })
+                .set('styles', {majorUnit: {count: 6}});
+
+            this.get('tabView').item(1).after('selectedChange', function (e) {
+                chart.render('#tempChart');
             });
         },
 
